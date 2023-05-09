@@ -1,109 +1,142 @@
-// If you would like to see some examples of similar code to make an interface interact with an API, 
-// check out the coin-server example from a previous COMP 426 semester.
-// https://github.com/jdmar3/coinserver
-// If you would like to see some examples of similar code to make an interface interact with an API, 
-// check out the coin-server example from a previous COMP 426 semester.
-// https://github.com/jdmar3/coinserver
+#!/usr/bin/env node
 
 
-//showing shot options based off whether there is an opponent
+const gameMode = document.getElementById("gameChoice");
+const opponentType = document.getElementById("opponentChoice");
+const playContainer = document.getElementById("playContainer");
+let playerShotOptions = document.createElement("select");
+playerShotOptions.id = 'playerShotOptions';
+let opponentShotOptions = document.createElement("select");
+opponentShotOptions.id = 'opponentShotOptions';
+let playerShot = document.createElement("div");
+let opponentShot = document.createElement("div");
+opponentShot.className="opShot";
+let resultContainer = document.getElementById("resultContainer");
 
-
-function shotView() {
-    $('.choices').attr('disabled', false);
-    let checker = document.getElementById('opponent');
-    
-    if (checker.checked == true) {
-      // If true, check which game is chosen
-      if ($('#rps').is(':checked')) {
-        $('.moves').css('visibility', 'visible');
-        $('.rpslsmoves').hide();
-      } else {
-        $('.moves').css('visibility', 'visible');
-        $('.rpslsmoves').show();
-      }
-    } else {
-      // Always show Rock, Paper, and Scissors options
-      $('.moves').css('visibility', 'visible');
-      // Show Lizard and Spock options only when the corresponding radio button is checked
-      if ($('#rpsls').is(':checked')) {
-        $('.rpslsmoves').show();
-      } else {
-        $('.rpslsmoves').hide();
-      }
+function handleDropDown(dropDown, name, value) {
+    // playable shots
+    const rock = document.createElement("option");
+    rock.value = `rock`;
+    rock.text = 'rock'
+    const paper = document.createElement("option");
+    paper.value = `paper`;
+    paper.text = `paper`
+    const scissors = document.createElement("option");
+    scissors.value = `scissors`;
+    scissors.text = `scissors`
+    const lizard = document.createElement("option");
+    lizard.value = `lizard`;
+    lizard.text = `lizard`;
+    const spock = document.createElement("option");
+    spock.value = `spock`;
+    spock.text = `spock`
+    // initial shot values
+    dropDown.remove(rock);
+    dropDown.remove(paper);
+    dropDown.remove(scissors);
+    dropDown.add(rock);
+    dropDown.add(paper);
+    dropDown.add(scissors);
+    if (value === 'rpsls') {
+        dropDown.add(lizard);
+        dropDown.add(spock)
     }
-  }
-  
-  
-
-function showResults(){
-    $('.results').show();
-    $('input').attr('disabled',true);
-    $('#play').attr('disabled',true);
-
-}
-function hideResults(){
-    $('.results').hide();
-    $('#play').attr('disabled',false);
-
-}
-function showRules(r){
-    if (r == 1){
-        $('.rules').css('visibility', 'visible');
-        $('#show').hide();
-        $('#hide').show();
-    } else {
-        $('.rules').css('visibility', 'hidden');
-        $('#show').show();
-        $('#hide').hide();
+    else {
+        dropDown.remove(lizard);
+        dropDown.remove(spock);
     }
 }
-function resetPage(){
-    shotView();
-    hideResults();
+
+
+handleDropDown(opponentShotOptions, 'opponent', 'rpsls');
+handleDropDown(opponentShotOptions, 'opponent', 'rps');
+// append shot options to play container
+
+
+gameMode.addEventListener("change", () => {
+    let value = gameMode.value;
+    handleDropDown(opponentShotOptions, 'opponent', value);
+})
+let playerText = document.createElement("h3");
+playerText.id = "player-text";
+let opponentText = document.createElement("h3");
+opponentText.id = "opponent-text";
+opponentText.append("Choose your shot: ")
+let isPlayerText = false;
+let isOpponentText = false;
+function handleOpponentType(playerText, opponentText, value) {
+
+    if (!isPlayerText) {
+        playerText.append("Player Shot: ")
+        playerShot.append(playerText);
+        isPlayerText = true;
+    }
+    if (value === 'computer' && !isOpponentText) {
+        opponentShot.append(opponentText);
+        opponentShot.append(opponentShotOptions);
+
+        isOpponentText = true;
+    }
+    else if ((value === 'computer' || value === 'self') && isOpponentText) {
+        document.getElementById("opponent-text").outerHTML = "";
+        document.getElementById("opponentShotOptions").outerHTML = "";
+        isOpponentText = false;
+    }
+}
+
+handleOpponentType(playerText, opponentText, 'computer');
+
+opponentType.addEventListener("change", () => {
+    let value = opponentType.value;
+    handleOpponentType(playerText, opponentText, value);
+})
+
+// add divs
+opponentShot.append(opponentShotOptions);
+playContainer.append(opponentShot);
+
+
+let playResult = document.createElement("h3");
+playResult.id = 'play-result';
+let isResetButton = false;
+async function play() {
+    let game = gameMode.value;
+    let shot = opponentShotOptions.value;
+    let withOpponent = opponentType.value === 'computer' ? true : false;
+    if (withOpponent) {
+        console.log(game);
+        console.log(shot);
+        const body = await playOpponent(`http://localhost:8080/app/${game}/play/${shot}`);
+        playResult.innerText = `player shot: ${body['player']} \n opponent shot: ${body['opponent']} \n result: ${body['result']}`;
+    }
+    else {
+        const body = await playNoOpponent(`http://localhost:8080/app/${game}/play/`)
+        playResult.innerText = `player shot: ${body['player']}`;
+    }
+    if (!isResetButton) {
+        let resetButton = document.createElement("button");
+        resetButton.className = 'button-2'
+        resetButton.onclick = () => { reset(); }
+        resetButton.innerText = 'reset';
+        resultContainer.append(resetButton);
+        isResetButton = true;
+    }
+    resultContainer.append(playResult);
 
 }
-async function playGame(){
-    var str = "";
-    try {
-    let game = $('input[type=radio][name=gameStyle]:checked').val();
-    let shot = $('input[type=radio][name=shot]:checked').val();
-    let url = '/app/'+ game + '/play/';
-    
-    if($('#opponent').is(':checked')){
-        url = url + "?shot=" + shot;
-    }
-    console.log(url)
-    console.log(shot)
 
-    let response = await fetch(url);
-    let result = await response.json();
+function reset() {
+    location.reload();
+}
 
-    
-    let title = "";
+async function playNoOpponent(url) {
+    response = await fetch(url);
+    const body = await response.json();
+    return body;
+}
 
-    if($('#opponent').is(':checked')){
-        $('#opponentImage').attr("src", `img/${result.opponent}.jpg`)
-        $('#playerImage').attr("src", `img/${result.player}.jpg`)
-        str = `You played ${result.player} and your opponent played ${result.opponent}.`;
-        if(result.result == "win"){
-            title = "You Won!!";
-        } else if (result.result == "lose") {
-            title = "Aw You Lost :( Maybe next time!";
-        } else {
-            title = "It's a tie! Could be worse.";
-            str =`Both players played ${result.player}.`
-        }
-        $('.resultTitle').text(title);
-    } else {
-        str = `player played ${result.player}.`;
-    }
-    
-    } catch (error){
-        window.alert("Please make sure that you've chosen which game you want to play and if available select your move.");
-    } finally {
-        $('.resultText').text(str);
-        showResults();
-    }
-
+async function playOpponent(url) {
+    response = await fetch(url);
+    const body = await response.json();
+    return body;
 }
