@@ -1,5 +1,5 @@
 {
-  "name": "html-cs-js-demo",
+  "name": "e02-pjgregso",
   "version": "1.0.0",
   "description": "This is the base code for an html+css+js demo non-assignment (extra credit).",
   "main": "server.js",
@@ -26,5 +26,16 @@
     "express": "^4.18.2",
     "minimist": "^1.2.8",
     "morgan": "^1.10.0"
-  }
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/comp426-2023-spring/e02-pjgregso.git"
+  },
+  "bugs": {
+    "url": "https://github.com/comp426-2023-spring/e02-pjgregso/issues"
+  },
+  "homepage": "https://github.com/comp426-2023-spring/e02-pjgregso#readme"
 }

@@ -1,12 +1,91 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Rock</title>
         <!-- Link to your script file(s) and CSS in here somewhere -->
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js" defer></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     </head>
-    <body>
-
-    <!-- Your interface markup goes here -->
-    <!-- For interface examples, look in the `/examples/` directory in the root of your starter code repo. -->
-
+    <body onload="resetPage();showRules(0)">
+        <h1>Rock, Paper, Scissors,...Lizard, Spock</h1>
+        <form class="gameplay">
+            <div class="gameStyling">
+            <h3>Which game would you like to play?
+                *Click "Show Game Rules" for more info*
+            </h3>
+            <input type="radio" id="rps" class="choices" name="gameStyle" value="rps" onclick="shotView()" checked> Play Rock Paper Scissors
+            <br><br>
+            <input type="radio" id="rpsls" class="choices" name="gameStyle" value="rpsls" onclick="shotView()"> Play Rock Paper Scissors Lizard Spock
+            <h3>
+                Play with an opponent?
+            <input type="checkbox" id="opponent"  class="choices" name="playStyle" onclick="shotView()">
+            </h3>
+            <p class="opponentinfo">
+                If the box above is not checked then when "Play Game" is clicked it will give you a single random move.
+            </p>
+        </div>
+            <div class="moves">
+                    <input type="radio" id="rock" name="shot" value="rock" checked>
+                    <label class="shot-rps" >Rock</label>
+                    <img id="rockimg" alt="rock" src="img/rock.jpg">
+                    <br>
+                    <input type="radio" id="paper" name="shot" value="paper">
+                    <label class="shot-rps" >Paper</label>
+                    <img id="paperimg" alt="paper" src="img/paper.jpg">
+                    <br>
+                    <input type="radio" id="scissors" name="shot" value="scissors">
+                    <label class="shot-rps" >Scissors</label>
+                    <img id="scissorsimg" alt="scissors" src="img/scissors.jpg">
+                <div class="rpslsmoves">
+                    <input type="radio" id="lizard" name="shot" value="lizard" class="rpsls-shot">
+                    <label class="shot-rpsls">Lizard</label>
+                    <img id="lizardimg" alt="lizard" src="img/lizard.jpg">
+                    <br>
+                    <input type="radio" id="spock" name="shot" value="spock" class="rpsls-shot">
+                    <label class="shot-rpsls">Spock</label>
+                    <img id="spockimg" alt="spock" src="img/spock.jpg">
+                    <br><br>
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="submit" id="placeholder" onclick="playGame()">Play Game</button>
+                <button type="button" id="play" onclick="playGame()">Play Game</button>
+                <button type="button" id="startover" onclick="resetPage()">Start Over</button>
+                <button type="button" id="show" onclick="showRules(1)">Show Game Rules</button>
+                <button type="button" id="hide" onclick="showRules(0)">Hide Game Rules</button>
+            </div>
+        </form>
+    <div class="results">
+        <h3 class="resultTitle">The Results</h3>
+        <p class="resultText"></p>
+        <img id="playerImage" alt="player shot" src="img/rock.jpg">
+        <img id="opponentImage" alt="opponent shot" src="img/scissors.jpg">
+        <p>To play again, click <em>start over</em> !</p>
+    </div>
+        <div class="rules">
+            <h2 id="rulesTitle">Game Rules</h2>
+            <ul id="rpsRules">
+            Rules for Rock, Paper, Scissors:
+                <li>Scissors CUTS Paper</li>
+                <li>Paper COVERS Rock</li>
+                <li> Rock CRUSHES Scissors</li>
+            </ul>
+            <ul>
+            Rules for the Lizard-Spock Expansion of Rock Paper Scissors:
+                <li>Scissors CUTS Paper</li>
+                <li>Paper COVERS Rock</li>
+                <li> Rock CRUSHES Scissors</li>
+                <li>Rock SMOOSHES Lizard</li>
+                <li>Lizard POISONS Spock</li>
+                <li>Spock SMASHES Scissors</li>
+                <li>Scissors DECAPITATES Lizard</li>
+                <li>Lizard EATS Paper</li>
+                <li>Paper DISPROVES Spock</li>
+                <li>Spock VAPORIZES Rock</li>
+            </ul>
+        </div>
     </body>
 </html>

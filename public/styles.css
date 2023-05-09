@@ -1,8 +1,144 @@
 body {
+    background-color: #C1E1C1;
+    align-items:center;
+   
+}
+h1{
+    font-family: 'Impact', sans-serif;
+    font-weight: 200;
 }
 
-h1 {
+.opponentinfo{
+    width: 250px;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #587958;
+    color: white;
+    border: 3px solid #3c533c;
+}
+#opponent{
+    transform: scale(1.25);
+    color: #3c533c;
+}
+.gameStyling{
+    float:left;
+    margin-right: 20px;
+    font-family: sans-serif;
+    font-weight: 500;
+    border: 2px solid #3c533c;
+    padding-left:  10px;
+    padding-right: 5px;
+}
+.gameStyling h3{
+    width: 250px;
+    flex-wrap: wrap;
+}
+#placeholder{
+    display: none;
 }
 
-p {
+#gameplay div {
+    display: table;
+}
+
+.moves{
+    float: left;
+}
+label{
+    font-size:large;
+    font-family: sans-serif;
+    font-weight: 500;
+}
+.buttons{
+   position: absolute;
+   margin-top: 300px;
+   margin-left: 40px;
+}
+.buttons button{
+    display:block;
+    background-color: #587958;
+    color: white;
+    border-radius: 10px;
+    font-size: medium;
+    border: 2px solid #3c533c;
+    padding: 5px;
+    margin: 10px;
+    font-family: sans-serif;
+}
+.buttons button:hover{
+    background-color: #112a11;
+}
+
+#play{
+    margin-top: 50px;
+}
+#play:disabled{
+    background-color: #112a11;
+    color: rgb(154, 154, 154)
+}
+.results img{
+    width: 100px;
+    height: auto;
+    filter:grayscale(50%);
+}
+.results{
+    display: none;
+    z-index: -1;
+    position: absolute;
+    margin-left: 500px;
+    align-self: center;
+    text-align: center;
+}
+.results h3{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: x-large;
+}
+.results p{
+    font-family: sans-serif;
+    font-size: large;
+    font: bold;
+}
+
+.rules ul{
+    display: inline-block;
+}
+
+.rules{
+   visibility: hidden;
+    float:left;
+    margin-top: 280px;
+    margin-left: 450px;
+    flex-wrap: wrap;
+    padding: 10px;
+    background-color: #587958;
+    color: white;
+    border: 3px solid #3c533c;
+    font-family: sans-serif;
+    font-weight: 300;
+    position: absolute;
+    border-radius: 10px;
+
+    
+}
+#rpsRules{
+   vertical-align: top;
+}
+#hide{
+    display: none;
+    margin: 0px;
+    margin-left: 10px;
+    vertical-align: super;
+}
+
+#rulesTitle{
+    margin: 0px;
+    margin-left: 20px;
+}
+
+.moves img{
+   width: 75px;
+   height: auto;
+   filter:grayscale(50%);
+   display: block;
 }
